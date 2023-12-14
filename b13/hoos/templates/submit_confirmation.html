@@ -1,0 +1,24 @@
+{% extends 'authenticated.html' %}
+
+{% block postnav %}
+<center>
+<h2>Thank you!</h2>
+<p>
+    Thank you for submitting the event "{{ submission.name }}"!
+    Please wait until an admin approves your event before you can see it listed.
+</p>
+{% if not valid_location %}
+    <p style="color: red; font-weight: bold;">
+        Warning: The location you submitted is not in Google Maps, so it will not show up on the map.
+    </p>
+{% endif %}
+<a button type="submit" class="btn btn-primary" href="{% url 'submit_event' %}">Submit another event</a>
+<a button type="submit" class="btn btn-primary" href="{% url 'listings' %}">See Event Listings</a>
+
+<p>
+    <br>
+    You can also monitor the status of your event here:
+</p>
+<a button type="submit" class="btn btn-primary" href="{% url 'my_events' %}">My Events</a>
+</center>
+{% endblock %}

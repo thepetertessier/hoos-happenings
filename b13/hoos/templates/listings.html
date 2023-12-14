@@ -1,0 +1,50 @@
+{% extends 'authenticated.html' %}
+
+{% block postnav %}
+<center>
+  <h1>Event Listings</h1>
+</center>
+<div class="event_list">
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        {% for event in events %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+              {% include 'single_event.html' %}
+              {% if user.is_superuser %}
+                <a button type="submit" class="btn btn-secondary" href="{% url 'reject_event' event.id %}">Reject</a>
+                {% include 'delete_button.html' %}
+              {% endif %}
+            </div>
+              {% empty %}
+              <p>No events available.</p>
+        {% endfor %}
+    </div>
+    <div class="col-md-2">
+        <form method="get">
+            <label>Search by Name:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" {% if name %} value="{{ name }}"{% endif %} style="margin-bottom: 10px">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary" style="margin-bottom: 5px">Search</button>
+                </div>
+            </div>
+            <div style="padding-bottom: 5px;">
+                <label>Events After:</label>
+                <input type="datetime-local" name="after" {% if date.0 %} value="{{ date.0 }}"{% endif %}>
+                <label>Events Before:</label>
+                <input type="datetime-local" name="before" {% if date.1 %} value="{{ date.1 }}"{% endif %}>
+            </div>
+            <div>
+                <label class="form-label">Tags:</label>
+                {{ form.tags }}
+            </div>
+            <button type="submit" class="btn btn-primary">Filter</button>
+            {% if show %}
+                <a href="{% url 'listings' %}"><button type="button" class="btn btn-secondary">Remove All Filters</button></a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}
+

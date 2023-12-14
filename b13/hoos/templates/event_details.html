@@ -1,0 +1,13 @@
+{% extends 'authenticated.html' %}
+
+{% load socialaccount %}
+
+{% block postnav %}
+<center>
+<div class="event_details">
+{% include 'single_event.html' %}
+<p>Created by {{ event.user }} on {{ event.date_time_created }}</p>
+</div>
+</center>
+
+{% endblock %}

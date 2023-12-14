@@ -1,0 +1,49 @@
+{% extends 'authenticated.html' %}
+
+{% block postnav %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFnP0Yo4IN8h8Q1U4SjPKdJH9X1QeiKMc&libraries=places&callback=initAutocomplete" async defer></script>
+  <div class="container mt-3">
+    <h2>Submit Event</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Event Name:</label>
+            {{ form.name }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Event Description:</label>
+            {{ form.description }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Event Location:</label>
+            {{ form.location }}
+            <span class="help-text">{{ form.location.help_text }}</span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date and Time:</label>
+            {{ form.date_time }}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+              <label class="form-label">Tags:</label>
+              {{ form.tags }}
+          </div>
+        </div>
+        {% for error in form.date_time.errors %}
+        <p class="text-danger">{{ error }}</p>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Event</button>
+    </form>
+  </div>
+  <script>
+    function initAutocomplete() {
+        var input = document.getElementById('autocomplete');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+  </script>
+  
+{% endblock %}
