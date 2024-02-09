@@ -20,14 +20,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+IS_HEROKU_APP = "DYNO" in os.environ
+
+if not IS_HEROKU_APP:
+    from dotenv import load_dotenv
+    load_dotenv()
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=10n28au+w)vqfjgt0br@t0-#b+^lxu#x#%7+8ziyy0+-dwu^+'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['hoos-fcd2d4c24696.herokuapp.com', '127.0.0.1', 'localhost']
-
+ALLOWED_HOSTS = [
+    'hoos-happenings-38379291d6c5.herokuapp.com',
+    'hoos-fcd2d4c24696.herokuapp.com',
+    '127.0.0.1',
+    'localhost'
+]
 
 # Application definition
 
@@ -91,10 +101,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'b13.wsgi.application'
 
 import dj_database_url
-os.environ.setdefault("DATABASE_URL", "postgres://mofandfeqpoatw:339fe095d20b61838de292b18f765e4e46d789adb271cb2d7ce47ea535ddd17b@ec2-35-169-9-79.compute-1.amazonaws.com:5432/dabe7ehgbuh8bp")
+DATABASE_URL = os.getenv('DATABASE_URL')
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-IS_HEROKU_APP = "DYNO" in os.environ
 if IS_HEROKU_APP:
     # In production on Heroku the database configuration is derived from the DATABASE_URL
     # environment variable by the dj-database-url package. DATABASE_URL will be set
@@ -171,8 +180,10 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 try:
-    if 'HEROKU' in os.environ:
+    if IS_HEROKU_APP:
         import django_heroku
         django_heroku.settings(locals())
 except ImportError:
     found = False
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
